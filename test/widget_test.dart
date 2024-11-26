@@ -11,20 +11,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_list/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Add a task to the to-do list', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const ToDoApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the initial state has no tasks.
+    expect(find.text('Add a new task'), findsOneWidget);
+    expect(find.byType(ListTile), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
+    // Enter a new task into the text field.
+    await tester.enterText(find.byType(TextField), 'Test Task');
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the new task has been added to the list.
+    expect(find.text('Test Task'), findsOneWidget);
+    expect(find.byType(ListTile), findsOneWidget);
   });
 }
